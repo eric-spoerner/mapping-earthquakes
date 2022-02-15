@@ -15,12 +15,12 @@ streets.addTo(map);
 // Add a marker for Los Angeles.
 //let marker = L.marker([34.0522, -118.2437]).addTo(map);
 // L.circle([34.0522, -118.2437], {
-//     radius: 300,
+//     radius: 300, // meters
 //     color: 'yellow'
 // }).addTo(map);
 
 L.circleMarker([34.0522, -118.2437], {
-    radius: 300,
+    radius: 300, //pixels, not meters!
     color: 'black',
     fillColor: '#ffffa1'
 }).addTo(map);

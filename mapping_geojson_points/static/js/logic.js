@@ -27,7 +27,25 @@ let map = L.map('mapid', {
 
 L.control.layers(baseMaps).addTo(map);
 
+let airportData = "https://raw.githubusercontent.com/eric-spoerner/mapping-earthquakes/mapping_geojson_points/mapping_geojson_points/static/js/majorAirports.json";
 
+//just add the data points with no labels
+// d3.json(airportData).then(function(data) {
+//   console.log(data);
+//   L.geoJSON(data).addTo(map);
+// })
+
+//add the data points with labels attached.
+d3.json(airportData).then(function(data) {
+  console.log(data);
+  L.geoJSON(data, {
+    onEachFeature: function(feature, layer){
+      console.log(feature);
+      layer.bindPopup("<h2>Airport code: " + feature.properties.faa + "</h2><hr><h3>Airport name: " + feature.properties.name + "</h3>");
+    }}).addTo(map);
+});
+
+// console.log(airportData);
 
 //slegacy code for adding a single geojson map
 

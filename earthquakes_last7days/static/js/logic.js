@@ -34,15 +34,34 @@ L.control.layers(baseMaps).addTo(map);
 // earthquakes summary format defined in https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
 let earthquakes = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
+function getRadius(magnitude) {
+  if (magnitude === 0) {
+    return 1;
+  }
+  return magnitude * 4;
+};
+
+function styleInfo(feature) {
+  return {
+    opacity: 1,
+    fillOpacity: 1,
+    fillColor: '#ffae42',
+    color: "#000000",
+    radius: getRadius(feature.properties.mag),
+    stroke: true,
+    weight: 0.5
+  };
+};
+
 d3.json(earthquakes).then(function(data) {
-  console.log(data);
-  L.geoJSON(data).addTo(map);
+  L.geoJSON(data, {
+    pointToLayer: function(feature, latlng){  //is latlng a native param of leaflet that translates geojson coords?
+      return L.circleMarker(latlng)},
+    style: styleInfo
+  }).addTo(map);
 })
 
-// let myStyle = {
-//   color: "blue",
-//   weight: 1
-// }
+
 
 // //just add the data points with no labels
 // d3.json(torontoHoods).then(function(data) {

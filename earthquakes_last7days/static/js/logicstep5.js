@@ -82,6 +82,7 @@ function getColor(magnitude) {
   return "#98ee00";
 };
 
+//extract json, map individual points to circle marker using style params, and add popup label
 d3.json(earthquakeData).then(function(data) {
   L.geoJSON(data, {
     pointToLayer: function(feature, latlng){  //is latlng a native param of leaflet that translates geojson coords?
@@ -90,22 +91,40 @@ d3.json(earthquakeData).then(function(data) {
     onEachFeature: function(feature, layer){
       layer.bindPopup(`<h2>Magnitude: ${feature.properties.mag}</h2><hr><h3>Location: ${feature.properties.place}</h3>`)
     }
-  }).addTo(earthquakes); // add all markers etc to earhtquake layer
-  earthquakes.addTo(map);
-})
+  }).addTo(earthquakes); // add all markers etc to earthquake layer
+  earthquakes.addTo(map); // add quake layer to map.
+});
+
+//add map legend
+let legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function(){
+
+    let div = L.DomUtil.create('div', 'info legend') //use DOMUtil to add div element to index.html dynamically
+        const magnitudes = [0, 1, 2, 3, 4, 5];
+        const colors = [
+          "#98ee00",
+          "#d4ee00",
+          "#eecc00",
+          "#ee9c00",
+          "#ea822c",
+          "#ea2c2c"
+        ];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < magnitudes.length; i++) {
+        console.log(colors[i]);
+        //? is conditional operator -- condensed if statement:
+        //condition ? ifTrue : ifFalse
+        //if not last value in array, return "1-2" type value, else return "5+" value type
+        div.innerHTML +=
+            '<i style="background:' + colors[i] + '"></i> ' +
+            magnitudes[i] + (magnitudes[i + 1] ? '&ndash;' + magnitudes[i + 1] + '<br>' : '+');
+        console.log(div.innerHTML);
+    }
+
+    return div;
+};
 
 
-
-// //just add the data points with no labels
-// d3.json(torontoHoods).then(function(data) {
-//   console.log(data);
-//   L.geoJSON(data, {
-//     style: myStyle,
-//     onEachFeature: function(feature, layer){
-//             console.log(feature);
-//             layer.bindPopup(`<h2>${feature.properties.AREA_NAME}</h2>`);
-//           }
-
-//     })
-//     .addTo(map);
-// })
+legend.addTo(map);

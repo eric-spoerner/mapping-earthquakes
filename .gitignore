@@ -6,7 +6,7 @@ mapping_geojson_points/static/js/config.js
 mapping_geojson_linestrings/static/js/config.js
 mapping_geojson_polygons/static/js/config.js
 earthquakes_last7days/static/js/config.js
-
+earthquake_challenge/static/js/config.js
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
